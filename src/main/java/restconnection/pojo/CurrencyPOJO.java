@@ -1,13 +1,15 @@
 package restconnection.pojo;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
 
-public class CurrencyPOJO {
+@JsonPropertyOrder({"table","currency","code","rates"})
+public class CurrencyPOJO{
 
     private String table;
     private String currency;
     private String code;
-    private List<Rates> rates;
+    private List<RatesPOJO> rates;
 
     public String getTable() {
         return table;
@@ -33,11 +35,11 @@ public class CurrencyPOJO {
         this.code = code;
     }
 
-    public List<Rates> getRates() {
+    public List<RatesPOJO> getRates() {
         return rates;
     }
 
-    public void setRates(List<Rates> rates) {
+    public void setRates(List<RatesPOJO> rates) {
         this.rates = rates;
     }
 

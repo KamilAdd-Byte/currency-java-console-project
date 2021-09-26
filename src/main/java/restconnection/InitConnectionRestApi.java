@@ -1,11 +1,15 @@
 package restconnection;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.Gson;
 import restconnection.pojo.CurrencyPOJO;
+import restconnection.pojo.RatesPOJO;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
@@ -16,15 +20,16 @@ public class InitConnectionRestApi {
     private static String currency;
     private static String date;
     private static final Scanner scanner = new Scanner(System.in);
+    private static String jsonLine;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("Set table: A, B, C");
         String outputTable = scanner.next();
         table=outputTable.toUpperCase();
         System.out.println("Set currency");
         String outputCurrency = scanner.next();
         currency=outputCurrency;
-        System.out.println("Set date: YYYY-dd-MM");
+        System.out.println("Set date: YYYY-mm-DD");
         String outputDate = scanner.next();
         date=outputDate.toUpperCase();
 
@@ -33,21 +38,55 @@ public class InitConnectionRestApi {
             URL url = new URL(urlNbp);
             URLConnection connection = url.openConnection();
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String jsonLine = "";
+            jsonLine = "";
 
             while ((jsonLine=reader.readLine()) != null){
                 break;
             }
-
-            System.out.println(jsonLine);
-
-            Gson gson = new Gson();
-            CurrencyPOJO currencyPOJO = gson.fromJson(jsonLine, CurrencyPOJO.class);
-
-            System.out.println(currencyPOJO);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        CurrencyPOJO currencyPOJO = getCurrencyPOJO();
+
+        int length = currencyPOJO.toString().length();
+        String[] splitCurrencyValue = new String[length];
+
+
+
+        File file = new File("currency.csv");
+
+        CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
+        mapperCsv.enable(CsvParser.Feature.WRAP_AS_ARRAY); //pomijanie nierozpoznanych typów
+
+        CsvSchema columns = CsvSchema.builder().setUseHeader(true) //utworzenie kolumn
+                .addColumn("table")
+                .addColumn("currency")
+                .addColumn("code")
+                .addArrayColumn("rates")
+                .addColumn("no")
+                .addColumn("effectiveDate")
+                .addColumn("mid")
+                .addColumn("bid")
+                .addColumn("ask")
+                .build();
+
+        ObjectWriter writer = mapperCsv.writerWithSchemaFor(CurrencyPOJO.class).with(columns);
+
+
+
+
+        writer.writeValues(file).write(currencyPOJO);
+
+
+
+
+    }
+
+
+    private static CurrencyPOJO getCurrencyPOJO() {
+        Gson gson = new Gson();
+        CurrencyPOJO currencyPOJO = gson.fromJson(jsonLine, CurrencyPOJO.class);
+        return currencyPOJO;
     }
 }

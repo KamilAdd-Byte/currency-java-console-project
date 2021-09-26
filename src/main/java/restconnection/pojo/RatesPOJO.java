@@ -1,6 +1,9 @@
 package restconnection.pojo;
 
-public class Rates {
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+//@JsonPropertyOrder({"no","effectiveDate","mid","bid","ask"})
+public class RatesPOJO {
     private String no;
     private String effectiveDate;
     private String mid;
@@ -49,7 +52,7 @@ public class Rates {
 
     @Override
     public String toString() {
-        return "Rates{" +
+        return "RatesPOJO{" +
                 "no='" + no + '\'' +
                 ", effectiveDate='" + effectiveDate + '\'' +
                 ", mid='" + mid + '\'' +

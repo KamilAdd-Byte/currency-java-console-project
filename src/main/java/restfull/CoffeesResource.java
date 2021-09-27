@@ -1,5 +1,7 @@
 package restfull;
 
+import jsoupcode.AbstractJsoupProcessor;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -14,5 +16,10 @@ public class CoffeesResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> stringList(){
         return List.of("Marazm","Wersache","Prada");
+    }
+
+    public static void main(String[] args) {
+        AbstractJsoupProcessor abstractJsoupProcessor = new AbstractJsoupProcessor();
+        abstractJsoupProcessor.getCodeWithWiki();
     }
 }

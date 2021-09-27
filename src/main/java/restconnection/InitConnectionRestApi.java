@@ -1,13 +1,11 @@
 package restconnection;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.Gson;
-import restconnection.pojo.CurrencyPOJO;
-import restconnection.pojo.RatesPOJO;
+import nbpconnections.dto.CurrencyDto;
 
 import java.io.*;
 import java.net.URL;
@@ -47,12 +45,10 @@ public class InitConnectionRestApi {
             e.printStackTrace();
         }
 
-        CurrencyPOJO currencyPOJO = getCurrencyPOJO();
+        CurrencyDto currencyDto = getCurrencyPOJO();
 
-        int length = currencyPOJO.toString().length();
+        int length = currencyDto.toString().length();
         String[] splitCurrencyValue = new String[length];
-
-
 
         File file = new File("currency.csv");
 
@@ -71,12 +67,12 @@ public class InitConnectionRestApi {
                 .addColumn("ask")
                 .build();
 
-        ObjectWriter writer = mapperCsv.writerWithSchemaFor(CurrencyPOJO.class).with(columns);
+        ObjectWriter writer = mapperCsv.writerWithSchemaFor(CurrencyDto.class).with(columns);
 
 
 
 
-        writer.writeValues(file).write(currencyPOJO);
+        writer.writeValues(file).write(currencyDto);
 
 
 
@@ -84,9 +80,9 @@ public class InitConnectionRestApi {
     }
 
 
-    private static CurrencyPOJO getCurrencyPOJO() {
+    private static CurrencyDto getCurrencyPOJO() {
         Gson gson = new Gson();
-        CurrencyPOJO currencyPOJO = gson.fromJson(jsonLine, CurrencyPOJO.class);
-        return currencyPOJO;
+        CurrencyDto currencyDto = gson.fromJson(jsonLine, CurrencyDto.class);
+        return currencyDto;
     }
 }

@@ -1,8 +1,8 @@
-package loop;
+package management;
 
 public class App {
     public static void main(String[] args) {
-        MainLoop mainLoop = new MainLoop();
+        CurrencyLogicApp mainLoop = new CurrencyLogicApp();
         mainLoop.run();
     }
 }

@@ -1,15 +1,15 @@
-package restconnection.pojo;
+package nbpconnections.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
 
 @JsonPropertyOrder({"table","currency","code","rates"})
-public class CurrencyPOJO{
+public class CurrencyDto {
 
     private String table;
     private String currency;
     private String code;
-    private List<RatesPOJO> rates;
+    private List<RatesDto> rates;
 
     public String getTable() {
         return table;
@@ -35,21 +35,20 @@ public class CurrencyPOJO{
         this.code = code;
     }
 
-    public List<RatesPOJO> getRates() {
+    public List<RatesDto> getRates() {
         return rates;
     }
 
-    public void setRates(List<RatesPOJO> rates) {
+    public void setRates(List<RatesDto> rates) {
         this.rates = rates;
     }
 
     @Override
     public String toString() {
-        return "CurrencyPOJO{" +
+        return "Currency: " +
                 "table='" + table + '\'' +
                 ", currency='" + currency + '\'' +
                 ", code='" + code + '\'' +
-                ", rates=" + rates +
-                '}';
+                ", rates=" + rates;
     }
 }

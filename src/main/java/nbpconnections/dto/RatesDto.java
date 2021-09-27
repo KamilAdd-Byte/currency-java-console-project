@@ -1,9 +1,9 @@
-package restconnection.pojo;
+package nbpconnections.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-//@JsonPropertyOrder({"no","effectiveDate","mid","bid","ask"})
-public class RatesPOJO {
+@JsonPropertyOrder({"no","effectiveDate","mid","bid","ask"})
+public class RatesDto {
     private String no;
     private String effectiveDate;
     private String mid;
@@ -52,12 +52,11 @@ public class RatesPOJO {
 
     @Override
     public String toString() {
-        return "RatesPOJO{" +
+        return "Rates : " +
                 "no='" + no + '\'' +
                 ", effectiveDate='" + effectiveDate + '\'' +
                 ", mid='" + mid + '\'' +
                 ", bid='" + bid + '\'' +
-                ", ask='" + ask + '\'' +
-                '}';
+                ", ask='" + ask + '\'';
     }
 }

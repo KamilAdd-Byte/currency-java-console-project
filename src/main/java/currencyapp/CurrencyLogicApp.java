@@ -1,7 +1,7 @@
-package management;
+package currencyapp;
 
-import jsoupcode.AbstractJsoupProcessor;
-import nbpconnections.dto.NbpLogicProcessorGetValue;
+import currencyapp.jsoupcode.AbstractJsoupProcessor;
+import currencyapp.nbpconnections.NbpLogicProcessorGetValueCurrency;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class CurrencyLogicApp implements Runnable {
 
-    private static NbpLogicProcessorGetValue nbpLogicProcessorGetValue;
+    private static NbpLogicProcessorGetValueCurrency nbpLogicProcessorGetValueCurrency;
 
     private String title = "############# Zapytaj o wartość waluty, złota lub wskaźników giełdy ############# "+"\n" +
             "poszukaj wartości waluty wpisując wartość tabeli, kod waluty (po wybraniu opcji 2 otrzymasz małą ściągę wszystkich kodów)"+"\n"+
@@ -60,7 +60,7 @@ public class CurrencyLogicApp implements Runnable {
                     }
 
                     try {
-                        NbpLogicProcessorGetValue.getCurrencyValueOnNbpApi();
+                        NbpLogicProcessorGetValueCurrency.getCurrencyValueOnNbpApi();
                     } catch (FileNotFoundException e) {
                         e.getMessage();
                     }
@@ -106,7 +106,7 @@ public class CurrencyLogicApp implements Runnable {
             String outputTable = scanner.next().toUpperCase();
             outputD=outputTable;
         }
-        NbpLogicProcessorGetValue.setTable(outputD.toUpperCase());
+        NbpLogicProcessorGetValueCurrency.setTable(outputD.toUpperCase());
 
         //currency
         System.out.println("Krok 2: Podaj trzy literowy KOD waluty");
@@ -118,14 +118,14 @@ public class CurrencyLogicApp implements Runnable {
             String outputCurrency = scanner.next();
             output = outputCurrency;
         }
-        NbpLogicProcessorGetValue.setCurrency(output.toUpperCase());
+        NbpLogicProcessorGetValueCurrency.setCurrency(output.toUpperCase());
 
         // date
-        System.out.println("Krok 3: Podaj datę by otrzymać wartość wybranej przez siebie waluty:" + NbpLogicProcessorGetValue.getCurrency()+ " YYYY-mm-DD");
+        System.out.println("Krok 3: Podaj datę by otrzymać wartość wybranej przez siebie waluty:" + NbpLogicProcessorGetValueCurrency.getCurrency()+ " YYYY-mm-DD");
         String outputDate = scanner.next();
         LocalDate localDate = LocalDate.parse(outputDate);
 
-        NbpLogicProcessorGetValue.setDate(localDate);
+        NbpLogicProcessorGetValueCurrency.setDate(localDate);
         System.out.println("Date user: "+localDate);
         scanner.nextLine();
     }

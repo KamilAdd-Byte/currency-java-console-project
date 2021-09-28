@@ -1,4 +1,4 @@
-package jsoupcode;
+package currencyapp.jsoupcode;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -6,7 +6,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ import java.util.List;
  */
 public class AbstractJsoupProcessor{
 
-    private static final String BASIC_URL = BasicJsoupUri.getUrlBasicCodeCurrency();
+    private static final String BASIC_URL = BasicAppUrl.getUrlBasicCodeCurrency();
     private static List<String> codes;
 
     public void getCodeWithWiki() {

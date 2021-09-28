@@ -1,7 +1,7 @@
 package restfull;
 
-import jsoupcode.AbstractJsoupProcessor;
-import management.CurrencyLogicApp;
+import currencyapp.jsoupcode.AbstractJsoupProcessor;
+import currencyapp.CurrencyLogicApp;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

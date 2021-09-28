@@ -3,9 +3,11 @@ package management;
 import jsoupcode.AbstractJsoupProcessor;
 import nbpconnections.dto.NbpLogicProcessorGetValue;
 
+import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -35,7 +37,7 @@ public class CurrencyLogicApp implements Runnable {
 
         while (userChoice!=0){
 
-            System.out.println("Wybierz opcję: " + "\n" + "0 >> EXIT" + "\n" + "2 >> GET all Code" + "\n" + "3 >> SEARCH Currency on REST" + "\n");
+            System.out.println("Wybierz opcję: " + "\n" + "<< 0 >> EXIT" + "\n" + "<< 2 >> GET all Code" + "\n" + "<< 3 >> SEARCH Currency on REST" + "\n");
             userChoice = scanner.nextInt();
 
             switch (userChoice) {
@@ -44,10 +46,17 @@ public class CurrencyLogicApp implements Runnable {
                     System.out.println(CurrencyLogicApp.userName + " jesteś w opcji SEARCH. Wyszukaj interesujących Cię danych wg wzoru:");
                     try {
                         getChoiceCurrencyFields();
+
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    NbpLogicProcessorGetValue.getCurrencyValueOnNbpApi();
+
+                    try {
+                        NbpLogicProcessorGetValue.getCurrencyValueOnNbpApi();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
                     break;
 
                 case EXIT:
@@ -77,7 +86,6 @@ public class CurrencyLogicApp implements Runnable {
         CurrencyLogicApp.userName = userName;
     }
 
-
     private void getChoiceCurrencyFields() throws ParseException {
        //select table
         System.out.println("Set table: A, B, C");
@@ -90,11 +98,10 @@ public class CurrencyLogicApp implements Runnable {
         // date
         System.out.println("Set date: YYYY-mm-DD");
         String outputDate = scanner.next();
-// TODO: 27.09.2021 Date format! Fix this bug 
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = format.parse(outputDate);
-        
-        NbpLogicProcessorGetValue.setDate(date);
-        System.out.println("Date user: "+date);
+        LocalDate localDate = LocalDate.parse(outputDate);
+
+        NbpLogicProcessorGetValue.setDate(localDate);
+        System.out.println("Date user: "+localDate);
+        scanner.nextLine();
     }
 }

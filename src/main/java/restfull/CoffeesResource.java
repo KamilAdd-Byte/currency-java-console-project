@@ -21,5 +21,8 @@ public class CoffeesResource {
     public static void main(String[] args) {
         AbstractJsoupProcessor abstractJsoupProcessor = new AbstractJsoupProcessor();
         abstractJsoupProcessor.getCodeWithWiki();
+
+
+
     }
 }

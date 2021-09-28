@@ -3,12 +3,15 @@ package nbpconnections.dto;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.stream.IntStream;
 
 public abstract class NbpLogicProcessorGetValue {
 
@@ -16,7 +19,7 @@ public abstract class NbpLogicProcessorGetValue {
 
     private static String table;
     private static String currency;
-    private static Date date;
+    private static LocalDate date;
 
     public static String getJsonLine() {
         return jsonLine;
@@ -38,15 +41,15 @@ public abstract class NbpLogicProcessorGetValue {
         NbpLogicProcessorGetValue.currency = currency;
     }
 
-    public static Date getDate() {
+    public static LocalDate getDate() {
         return date;
     }
 
-    public static void setDate(Date date) {
+    public static void setDate(LocalDate date) {
         NbpLogicProcessorGetValue.date = date;
     }
 
-    public static void getCurrencyValueOnNbpApi(){
+    public static void getCurrencyValueOnNbpApi() throws FileNotFoundException {
         try {
             var urlNbp = "https://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + date;
             URL url = new URL(urlNbp);
@@ -62,12 +65,18 @@ public abstract class NbpLogicProcessorGetValue {
             CurrencyDto currency = gson.fromJson(jsonLine, CurrencyDto.class);
             System.out.println(currency);
 
-
-        } catch (
-                MalformedURLException e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+
         }
+    }
+    /**
+     * @param output Value to scanner.in
+     * @return LocalDate pattern yyyy-MM-DD.
+     */
+    public static LocalDate convertOutputLineToDate(String output){
+        return LocalDate.parse(output);
     }
 }

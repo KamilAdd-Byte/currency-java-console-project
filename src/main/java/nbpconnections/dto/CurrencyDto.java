@@ -45,10 +45,10 @@ public class CurrencyDto {
 
     @Override
     public String toString() {
-        return "Currency: " +
-                "table='" + table + '\'' +
-                ", currency='" + currency + '\'' +
-                ", code='" + code + '\'' +
-                ", rates=" + rates;
+        return "Waluta: " +
+                "tabela:'" + table + '\'' +
+                ", nazwa waluty:'" + currency + '\'' +
+                ", kod waluty:'" + code + '\'' +
+                ", wartość waluty w zł: " + rates.get(0).getMid();
     }
 }

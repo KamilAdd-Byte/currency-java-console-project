@@ -1,6 +1,7 @@
 package restfull;
 
 import jsoupcode.AbstractJsoupProcessor;
+import management.CurrencyLogicApp;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,6 +24,6 @@ public class CoffeesResource {
         abstractJsoupProcessor.getCodeWithWiki();
 
 
-
+        CurrencyLogicApp.getAscii();
     }
 }

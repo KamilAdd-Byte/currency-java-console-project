@@ -1,7 +1,6 @@
 package nbpconnections.dto;
 
 import com.google.gson.Gson;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,8 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.stream.IntStream;
 
 public abstract class NbpLogicProcessorGetValue {
 
@@ -35,6 +32,10 @@ public abstract class NbpLogicProcessorGetValue {
 
     public static void setTable(String table) {
         NbpLogicProcessorGetValue.table = table;
+    }
+
+    public static String getCurrency() {
+        return currency;
     }
 
     public static void setCurrency(String currency) {

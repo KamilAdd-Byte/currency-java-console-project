@@ -15,7 +15,7 @@ import java.util.List;
  * 2. Document and get elements
  * 3. ForEach select your fields
  */
-public class AbstractJsoupProcessor {
+public class AbstractJsoupProcessor{
 
     private static final String BASIC_URL = BasicJsoupUri.getUrlBasicCodeCurrency();
     private static List<String> codes;

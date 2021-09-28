@@ -14,4 +14,8 @@ public class BasicJsoupUri {
     public static String getUrlBasicCodeCurrency() {
         return URL_BASIC_CODE_CURRENCY;
     }
+
+    public String getUrlForScrapping() {
+        return urlForScrapping;
+    }
 }

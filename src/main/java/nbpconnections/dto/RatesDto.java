@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"no","effectiveDate","mid","bid","ask"})
 public class RatesDto {
+
     private String no;
     private String effectiveDate;
     private String mid;

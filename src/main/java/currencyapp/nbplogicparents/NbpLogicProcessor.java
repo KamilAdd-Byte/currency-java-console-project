@@ -1,6 +1,6 @@
 package currencyapp.nbplogicparents;
 
-import com.google.gson.Gson;
+import currencyapp.csvmapper.CsvProcessorWrite;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -11,7 +11,7 @@ import java.net.URLConnection;
  * @author kamillodzinski
  * @implNote This is SuperClass
  */
-public abstract class NbpLogicProcessor {
+public abstract class NbpLogicProcessor extends CsvProcessorWrite {
 
     private String jsonLine;
     private static URL url;

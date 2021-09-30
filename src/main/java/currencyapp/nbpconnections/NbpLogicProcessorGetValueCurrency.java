@@ -66,8 +66,9 @@ public abstract class NbpLogicProcessorGetValueCurrency {
 
             Gson gson = new Gson();
             CurrencyDto currency = gson.fromJson(jsonLine, CurrencyDto.class);
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println(currency);
-
+            System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

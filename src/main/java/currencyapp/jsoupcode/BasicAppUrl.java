@@ -7,7 +7,7 @@ public abstract class BasicAppUrl {
 
     private String urlForScrapping;
     private static final String URL_BASIC_CODE_CURRENCY = "https://pl.wikipedia.org/wiki/ISO_4217";
-    private static final String URL_BASIC_VALUE_GOLD = "https://api.nbp.pl/api/cenyzlota/last/30/?format=json";
+    private static final String URL_BASIC_VALUE_GOLD = "http://api.nbp.pl/api/cenyzlota/last/30/?format=json";
 
 
 

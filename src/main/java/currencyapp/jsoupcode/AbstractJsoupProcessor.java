@@ -1,5 +1,6 @@
 package currencyapp.jsoupcode;
 
+import currencyapp.CurrencyLogicApp;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,9 +11,9 @@ import java.util.List;
 
 /**
  * Jsoup:
- * 1. Connection jsoup with url basic.
- * 2. Document and get elements
- * 3. ForEach select your fields
+ * 1. Connection jsoup with url basic .get()
+ * 2. Document and get elements by ...
+ * 3. ForEach select your fields tag, attribute
  */
 public class AbstractJsoupProcessor{
 
@@ -24,12 +25,14 @@ public class AbstractJsoupProcessor{
             Document document = Jsoup.connect(BASIC_URL).get();
             Elements elements = document.getElementsByClass("wikitable sortable");
             Elements title = document.getElementsByTag("p");
+            System.out.println("_________________________________________");
             System.out.println(title.text());
+            System.out.println("_________________________________________");
 
             for (Element element : elements.select("tr")) {
                 System.out.println(element.text());
             }
-
+            System.out.println(CurrencyLogicApp.getUserName() + " wybierz interesujący Cię kod waluty i wyszukaj wartości w opcji 3:");
         } catch (IOException e) {
             e.printStackTrace();
         }

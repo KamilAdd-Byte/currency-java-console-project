@@ -1,36 +1,32 @@
 package currencyapp.nbpconnections.gold.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import restfull.NbpDto;
 
-import java.time.LocalDate;
+@JsonPropertyOrder({"data","cena"})
+public class GoldDto extends NbpDto {
 
-@JsonPropertyOrder({"value","date"})
-public class GoldDto {
+    private String data;
+    private String cena;
 
-    private String value;
-    private LocalDate date;
-
-    public String getValue() {
-        return value;
+    public String getCena() {
+        return cena;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setCena(String cena) {
+        this.cena = cena;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public String getData() {
+        return data;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setData(String data) {
+        this.data = data;
     }
 
     @Override
     public String toString() {
-        return "Cena złota (za 1g w próbie 1000){" +
-                "wartość: '" + value + '\'' +
-                ", data: " + date +
-                '}';
+        return "Cena złota (1 g w próbie 1000) " + "cena: " + cena + " data: " + data;
     }
 }

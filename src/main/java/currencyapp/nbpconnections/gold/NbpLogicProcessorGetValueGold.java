@@ -1,29 +1,31 @@
 package currencyapp.nbpconnections.gold;
 
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.google.gson.Gson;
-import currencyapp.csvmapper.CsvProcessorWrite;
 import currencyapp.jsoupcode.BasicAppUrl;
 import currencyapp.nbpconnections.gold.dto.GoldDto;
+import currencyapp.nbplogicparents.NbpLogicProcessor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
 
-public class NbpLogicProcessorGetValueGold {
-    private static List<GoldDto> goldDtoList;
+public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
+
     private static String jsonLine = "";
+
+    public NbpLogicProcessorGetValueGold(String jsonLine) {
+        super(jsonLine);
+    }
 
     public static void getGoldValue (){
         try {
-            URL url = new URL(BasicAppUrl.getUrlBasicValueGold());
-            URLConnection connection = url.openConnection();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            URL onNbp = NbpLogicProcessor.setUrlToAccessDeniedOnNbp(BasicAppUrl.getUrlBasicValueGold());
+            URLConnection urlConnection = NbpLogicProcessor.setConnectionForUrl(onNbp);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
             while ((jsonLine = reader.readLine()) != null){
                 break;
@@ -34,13 +36,11 @@ public class NbpLogicProcessorGetValueGold {
             for (GoldDto dto : goldDto) {
                 System.out.println(dto);
             }
+
         }catch (MalformedURLException e){
             e.printStackTrace();
         }catch (IOException e){
             e.printStackTrace();
         }
-
-
-
     }
 }

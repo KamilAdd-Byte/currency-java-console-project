@@ -1,8 +1,8 @@
-package currencyapp.nbpconnections;
+package currencyapp.nbpconnections.currency;
 
 import com.google.gson.Gson;
-import currencyapp.nbpconnections.dto.CurrencyDto;
-
+import currencyapp.nbpconnections.currency.dto.CurrencyDto;
+import currencyapp.nbplogicparents.NbpLogicProcessor;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,13 +12,17 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
 
-public abstract class NbpLogicProcessorGetValueCurrency {
+public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcessor {
 
     private static String jsonLine;
 
     private static String table;
     private static String currency;
     private static LocalDate date;
+
+    public NbpLogicProcessorGetValueCurrency(String jsonLine) {
+        super(jsonLine);
+    }
 
     public static String getJsonLine() {
         return jsonLine;
@@ -55,20 +59,20 @@ public abstract class NbpLogicProcessorGetValueCurrency {
     public static void getCurrencyValueOnNbpApi() throws FileNotFoundException {
         try {
             var urlNbp = "https://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + date;
-            URL url = new URL(urlNbp);
-            URLConnection connection = url.openConnection();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            URL onNbp = NbpLogicProcessor.setUrlToAccessDeniedOnNbp(urlNbp);
+            URLConnection urlConnection = NbpLogicProcessor.setConnectionForUrl(onNbp);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             jsonLine = "";
 
             while ((jsonLine = reader.readLine()) != null) {
                 break;
             }
-
             Gson gson = new Gson();
             CurrencyDto currency = gson.fromJson(jsonLine, CurrencyDto.class);
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Pozyskane dane: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println(currency);
-            System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
+            System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

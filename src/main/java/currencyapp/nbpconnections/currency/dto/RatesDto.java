@@ -1,4 +1,4 @@
-package currencyapp.nbpconnections.dto;
+package currencyapp.nbpconnections.currency.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 

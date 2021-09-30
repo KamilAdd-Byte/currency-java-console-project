@@ -1,6 +1,8 @@
-package nbpconnections.dto;
+package currencyapp.nbpconnections;
 
 import com.google.gson.Gson;
+import currencyapp.nbpconnections.dto.CurrencyDto;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,7 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
 
-public abstract class NbpLogicProcessorGetValue {
+public abstract class NbpLogicProcessorGetValueCurrency {
 
     private static String jsonLine;
 
@@ -23,7 +25,7 @@ public abstract class NbpLogicProcessorGetValue {
     }
 
     public static void setJsonLine(String jsonLine) {
-        NbpLogicProcessorGetValue.jsonLine = jsonLine;
+        NbpLogicProcessorGetValueCurrency.jsonLine = jsonLine;
     }
 
     public static String getTable() {
@@ -31,7 +33,7 @@ public abstract class NbpLogicProcessorGetValue {
     }
 
     public static void setTable(String table) {
-        NbpLogicProcessorGetValue.table = table;
+        NbpLogicProcessorGetValueCurrency.table = table;
     }
 
     public static String getCurrency() {
@@ -39,7 +41,7 @@ public abstract class NbpLogicProcessorGetValue {
     }
 
     public static void setCurrency(String currency) {
-        NbpLogicProcessorGetValue.currency = currency;
+        NbpLogicProcessorGetValueCurrency.currency = currency;
     }
 
     public static LocalDate getDate() {
@@ -47,7 +49,7 @@ public abstract class NbpLogicProcessorGetValue {
     }
 
     public static void setDate(LocalDate date) {
-        NbpLogicProcessorGetValue.date = date;
+        NbpLogicProcessorGetValueCurrency.date = date;
     }
 
     public static void getCurrencyValueOnNbpApi() throws FileNotFoundException {
@@ -64,8 +66,9 @@ public abstract class NbpLogicProcessorGetValue {
 
             Gson gson = new Gson();
             CurrencyDto currency = gson.fromJson(jsonLine, CurrencyDto.class);
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println(currency);
-
+            System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

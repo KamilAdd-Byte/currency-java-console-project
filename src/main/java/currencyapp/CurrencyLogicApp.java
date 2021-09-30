@@ -1,7 +1,9 @@
-package management;
+package currencyapp;
 
-import jsoupcode.AbstractJsoupProcessor;
-import nbpconnections.dto.NbpLogicProcessorGetValue;
+import currencyapp.jsoupcode.AbstractJsoupProcessor;
+import currencyapp.nbpconnections.NbpLogicProcessorGetValueCurrency;
+import currencyapp.nbpconnections.gold.NbpLogicProcessorGetValueGold;
+
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -9,7 +11,7 @@ import java.util.Scanner;
 
 public class CurrencyLogicApp implements Runnable {
 
-    private static NbpLogicProcessorGetValue nbpLogicProcessorGetValue;
+    private static NbpLogicProcessorGetValueCurrency nbpLogicProcessorGetValueCurrency;
 
     private String title = "############# Zapytaj o wartość waluty, złota lub wskaźników giełdy ############# "+"\n" +
             "poszukaj wartości waluty wpisując wartość tabeli, kod waluty (po wybraniu opcji 2 otrzymasz małą ściągę wszystkich kodów)"+"\n"+
@@ -29,6 +31,7 @@ public class CurrencyLogicApp implements Runnable {
             "\n");
     private static final int CODE = 2;
     private static final int SEARCH = 3;
+    private static final int GOLD = 4;
     private static final int EXIT = 0;
     private static String jsonLine;
 
@@ -45,7 +48,7 @@ public class CurrencyLogicApp implements Runnable {
 
         while (userChoice!=0){
             System.out.println(getAscii());
-            System.out.println("Wybierz opcję: " + "\n" + "<< 0 >> Wyjście z aplikacji" + "\n" + "<< 2 >> Ściąga z kodami walut (ISO 4217)" + "\n" + "<< 3 >> Szukaj wartości waluty" + "\n");
+            System.out.println("Wybierz opcję: " + "\n" + "<< 0 >> Wyjście z aplikacji" + "\n" + "<< 2 >> Ściąga z kodami walut (ISO 4217)" + "\n" + "<< 3 >> Szukaj wartości waluty" + "\n" + "<< 4 >> Pokaż 30 ostatnich cen złota");
             userChoice = scanner.nextInt();
 
             switch (userChoice) {
@@ -60,23 +63,22 @@ public class CurrencyLogicApp implements Runnable {
                     }
 
                     try {
-                        NbpLogicProcessorGetValue.getCurrencyValueOnNbpApi();
+                        NbpLogicProcessorGetValueCurrency.getCurrencyValueOnNbpApi();
                     } catch (FileNotFoundException e) {
                         e.getMessage();
                     }
-
                     break;
-
-                case EXIT:
-                    System.out.println("Wyjście z programu");
-                    scanner.close();
-                    break;
-
                 case CODE:
                     AbstractJsoupProcessor ajp = new AbstractJsoupProcessor();
                     ajp.getCodeWithWiki();
                     break;
-
+                case GOLD:
+                    NbpLogicProcessorGetValueGold.getGoldValue();
+                    break;
+                case EXIT:
+                    System.out.println("Wyjście z programu");
+                    scanner.close();
+                    break;
                 default:
                     System.out.println("Press 1 - search currency or 2 - close program");
             }
@@ -106,7 +108,7 @@ public class CurrencyLogicApp implements Runnable {
             String outputTable = scanner.next().toUpperCase();
             outputD=outputTable;
         }
-        NbpLogicProcessorGetValue.setTable(outputD.toUpperCase());
+        NbpLogicProcessorGetValueCurrency.setTable(outputD.toUpperCase());
 
         //currency
         System.out.println("Krok 2: Podaj trzy literowy KOD waluty");
@@ -118,19 +120,27 @@ public class CurrencyLogicApp implements Runnable {
             String outputCurrency = scanner.next();
             output = outputCurrency;
         }
-        NbpLogicProcessorGetValue.setCurrency(output.toUpperCase());
+        NbpLogicProcessorGetValueCurrency.setCurrency(output.toUpperCase());
 
         // date
-        System.out.println("Krok 3: Podaj datę by otrzymać wartość wybranej przez siebie waluty:" + NbpLogicProcessorGetValue.getCurrency()+ " YYYY-mm-DD");
+        System.out.println("Krok 3: Podaj datę by otrzymać wartość wybranej przez siebie waluty: <<||" + NbpLogicProcessorGetValueCurrency.getCurrency() + "||>> wzór -> YYYY-mm-DD");
         String outputDate = scanner.next();
         LocalDate localDate = LocalDate.parse(outputDate);
 
-        NbpLogicProcessorGetValue.setDate(localDate);
+        NbpLogicProcessorGetValueCurrency.setDate(localDate);
         System.out.println("Date user: "+localDate);
         scanner.nextLine();
     }
 
     public static StringBuilder getAscii() {
         return ascii;
+    }
+
+    public static String getUserName() {
+        return userName;
+    }
+
+    public static void setUserName(String userName) {
+        CurrencyLogicApp.userName = userName;
     }
 }

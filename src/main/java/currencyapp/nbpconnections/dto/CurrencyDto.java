@@ -1,10 +1,12 @@
-package nbpconnections.dto;
+package currencyapp.nbpconnections.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import restfull.NbpDto;
+
 import java.util.List;
 
 @JsonPropertyOrder({"table","currency","code","rates"})
-public class CurrencyDto {
+public class CurrencyDto extends NbpDto {
 
     private String table;
     private String currency;

@@ -1,7 +1,7 @@
 package currencyapp;
 
 import currencyapp.jsoupcode.AbstractJsoupProcessor;
-import currencyapp.nbpconnections.NbpLogicProcessorGetValueCurrency;
+import currencyapp.nbpconnections.currency.NbpLogicProcessorGetValueCurrency;
 import currencyapp.nbpconnections.gold.NbpLogicProcessorGetValueGold;
 
 import java.io.FileNotFoundException;

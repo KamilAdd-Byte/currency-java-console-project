@@ -1,6 +1,10 @@
 package currencyapp.jsoupcode;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -34,5 +38,10 @@ class BasicAppUrlTest {
 
         assertEquals(hashCode,basicAppUrl.hashCode());
     }
-
+    @Test
+    @DisplayName("should status OK for USD currency")
+    public void getUSDonNbpApi(){
+        when().get("https://api.nbp.pl/api/exchangerates/rates/A/USD/").
+        then().statusCode(200);
+    }
 }

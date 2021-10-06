@@ -24,6 +24,14 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
         super(jsonLine);
     }
 
+    public static String getJsonLine() {
+        return jsonLine;
+    }
+
+    public static void setJsonLine(String jsonLine) {
+        NbpLogicProcessorGetValueGold.jsonLine = jsonLine;
+    }
+
     public static void getGoldValue (){
         try {
 

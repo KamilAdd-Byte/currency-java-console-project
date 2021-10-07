@@ -11,10 +11,7 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class CurrencyLogicApp implements Runnable {
-
-
     private static NbpLogicProcessorGetValueCurrency nbpLogicProcessorGetValueCurrency;
-
     private String title = "############# Zapytaj o wartość waluty, złota lub wskaźników giełdy ############# "+"\n" +
             "poszukaj wartości waluty wpisując wartość tabeli, kod waluty (po wybraniu opcji 2 otrzymasz małą ściągę wszystkich kodów)"+"\n"+
             "wpisując datę dowiesz sie jaką wartość dana waluta miała we wskazanym przez Ciebie dniu" + "\n"+
@@ -31,18 +28,15 @@ public class CurrencyLogicApp implements Runnable {
             "/_______ (____  /   __// ____| |__| (____  /\\__|  |  \\____/    \\/\\_/  (____  /____/____/ |__|  \\___  >\n" +
             "        \\/    \\/|__|   \\/                \\/\\______|                        \\/                      \\/ \n" +
             "\n");
-    private static final int PRINT = 5;
-    private static final int SHOW = 6;
-
+    private static final int EXIT = 0;
     private static final int CODE = 2;
     private static final int SEARCH = 3;
     private static final int GOLD = 4;
-    private static final int EXIT = 0;
+    private static final int PRINT = 5;
+    private static final int SHOW = 6;
 
     private static String jsonLine;
-
     private static String userName;
-
     private static final Scanner scanner = new Scanner(System.in);
 
     @Override
@@ -91,13 +85,12 @@ public class CurrencyLogicApp implements Runnable {
                     case SHOW:
                         NbpLogicProcessorGetValueGold.getGoldValue();
                         break;
-
                 case EXIT:
                     System.out.println("Wyjście z programu");
                     scanner.close();
                     break;
                 default:
-                    System.out.println("Press 1 - search currency or 2 - close program");
+                    System.out.println("Press 1 - search currency or 0 - close program");
             }
         }
     }

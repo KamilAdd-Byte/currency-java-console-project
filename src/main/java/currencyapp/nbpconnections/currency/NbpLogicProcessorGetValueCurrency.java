@@ -1,12 +1,14 @@
 package currencyapp.nbpconnections.currency;
 
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.Gson;
 import currencyapp.nbpconnections.currency.dto.CurrencyDto;
 import currencyapp.nbplogicparents.NbpLogicProcessor;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -73,6 +75,29 @@ public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcesso
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Pozyskane dane: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println(currency);
             System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
+
+            File file = new File("currency.csv");
+
+            CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
+            mapperCsv.enable(CsvParser.Feature.WRAP_AS_ARRAY); //pomijanie nierozpoznanych typów
+
+            CsvSchema columns = CsvSchema.builder().setUseHeader(true) //utworzenie kolumn
+                    .addColumn("table")
+                    .addColumn("currency")
+                    .addColumn("code")
+                    .addColumn("rates")
+                    .addColumn("no")
+                    .addColumn("effectiveDate")
+                    .addColumn("mid")
+                    .addColumn("bid")
+                    .addColumn("ask")
+                    .build();
+
+            ObjectWriter writer = mapperCsv.writerWithSchemaFor(CurrencyDto.class).with(columns);
+
+            writer.writeValues(file).write(currency);
+
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -80,6 +105,7 @@ public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcesso
 
         }
     }
+
     /**
      * @param output Value to scanner.in
      * @return LocalDate pattern yyyy-MM-DD.

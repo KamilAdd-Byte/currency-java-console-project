@@ -1,10 +1,9 @@
 package currencyapp.nbpconnections.gold.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import restfull.NbpDto;
 
 @JsonPropertyOrder({"data","cena"})
-public class GoldDto extends NbpDto {
+public class GoldDto {
 
     private String data;
     private String cena;

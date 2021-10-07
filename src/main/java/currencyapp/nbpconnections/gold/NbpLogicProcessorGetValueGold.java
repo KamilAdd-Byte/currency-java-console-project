@@ -1,7 +1,6 @@
 package currencyapp.nbpconnections.gold;
 
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -9,7 +8,6 @@ import com.google.gson.Gson;
 import currencyapp.jsoupcode.BasicAppUrl;
 import currencyapp.nbpconnections.gold.dto.GoldDto;
 import currencyapp.nbplogicparents.NbpLogicProcessor;
-
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,7 +16,7 @@ import java.net.URLConnection;
 public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
     private static String jsonLine = "";
-
+    private static Gson gson = null;
     public NbpLogicProcessorGetValueGold(String jsonLine) {
         super(jsonLine);
     }
@@ -42,38 +40,38 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
             while ((jsonLine = reader.readLine()) != null){
                 break;
             }
-
-            Gson gson = new Gson();
-
-            File file = new File("gold.csv");
-
-            CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
-            mapperCsv.enable(CsvParser.Feature.EMPTY_STRING_AS_NULL); //pomijanie nierozpoznanych typów
-
-            CsvSchema columns = CsvSchema.builder().setUseHeader(true) //utworzenie kolumn
-                    .addColumn("data")
-                    .addColumn("cena")
-                    .build();
-
-            ObjectWriter writer = mapperCsv.writerWithSchemaFor(GoldDto.class).with(columns);
-
-
+            gson = new Gson();
             GoldDto[] goldDto = gson.fromJson(jsonLine, GoldDto[].class);
-
             for (GoldDto dto : goldDto) {
                 System.out.println(dto);
-                if (reader.readLine()!=null){
-                    writer.writeValues(file).write(dto);
-                }
-
-
-
             }
-
         }catch (MalformedURLException e){
             e.printStackTrace();
         }catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void printValueGoldToCsv() throws IOException {
+
+        getGoldValue(); // method call
+
+        gson = new Gson();
+
+        File file = new File("gold.csv");
+
+        CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
+        mapperCsv.enable(CsvParser.Feature.EMPTY_STRING_AS_NULL); //pomijanie nierozpoznanych typów
+
+        CsvSchema columns = CsvSchema.builder().setUseHeader(true) //utworzenie kolumn
+                .addColumn("data")
+                .addColumn("cena")
+                .build();
+
+        ObjectWriter writer = mapperCsv.writerWithSchemaFor(GoldDto.class).with(columns);
+
+
+        GoldDto[] goldDto = gson.fromJson(jsonLine, GoldDto[].class);
+        writer.writeValues(file).writeAll(goldDto);
     }
 }

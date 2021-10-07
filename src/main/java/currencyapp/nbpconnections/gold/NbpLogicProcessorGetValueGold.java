@@ -1,6 +1,7 @@
 package currencyapp.nbpconnections.gold;
 
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -8,10 +9,8 @@ import com.google.gson.Gson;
 import currencyapp.jsoupcode.BasicAppUrl;
 import currencyapp.nbpconnections.gold.dto.GoldDto;
 import currencyapp.nbplogicparents.NbpLogicProcessor;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -46,7 +45,6 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
             Gson gson = new Gson();
 
-
             File file = new File("gold.csv");
 
             CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
@@ -59,15 +57,22 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
             ObjectWriter writer = mapperCsv.writerWithSchemaFor(GoldDto.class).with(columns);
 
+
             GoldDto[] goldDto = gson.fromJson(jsonLine, GoldDto[].class);
 
             for (GoldDto dto : goldDto) {
                 System.out.println(dto);
+                if (reader.readLine()!=null){
+                    writer.writeValues(file).write(dto);
+                }
+
+
+
             }
 
         }catch (MalformedURLException e){
             e.printStackTrace();
-        }catch (IOException e){
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }

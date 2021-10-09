@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.Gson;
 import currencyapp.nbpconnections.currency.dto.CurrencyDto;
+import currencyapp.nbpconnections.currency.dto.RatesDto;
 import currencyapp.nbplogicparents.NbpLogicProcessor;
 
 import java.io.*;
@@ -75,35 +76,36 @@ public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcesso
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Pozyskane dane: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println(currency);
             System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
-
-            File file = new File("currency.csv");
-
-            CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
-            mapperCsv.enable(CsvParser.Feature.WRAP_AS_ARRAY); //pomijanie nierozpoznanych typów
-
-            CsvSchema columns = CsvSchema.builder().setUseHeader(true) //utworzenie kolumn
-                    .addColumn("table")
-                    .addColumn("currency")
-                    .addColumn("code")
-                    .addColumn("rates")
-                    .addColumn("no")
-                    .addColumn("effectiveDate")
-                    .addColumn("mid")
-                    .addColumn("bid")
-                    .addColumn("ask")
-                    .build();
-
-            ObjectWriter writer = mapperCsv.writerWithSchemaFor(CurrencyDto.class).with(columns);
-
-            writer.writeValues(file).write(currency);
-
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
 
         }
+    }
+
+    public static void printCurrencyToCsv() throws IOException {
+        getCurrencyValueOnNbpApi();
+
+        File file = new File("currency.csv");
+
+        CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
+        mapperCsv.enable(CsvParser.Feature.EMPTY_STRING_AS_NULL); //pomijanie nierozpoznanych typów
+
+        CsvSchema columns = CsvSchema.builder().setUseHeader(true) //utworzenie kolumn
+//                .addColumn("table")
+                .addColumn("currency")
+                .addColumn("code")
+                .addColumn("rates")
+                .addColumn("no")
+                .addColumn("effectiveDate")
+                .addColumn("mid")
+                .addColumn("bid")
+                .addColumn("ask")
+                .build();
+
+        ObjectWriter writer = mapperCsv.writerWithSchemaFor(CurrencyDto.class).with(columns);
+        writer.writeValues(file).write(currency);
     }
 
     /**

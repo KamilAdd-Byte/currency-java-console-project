@@ -34,6 +34,7 @@ public class CurrencyLogicApp implements Runnable {
     private static final int GOLD = 4;
     private static final int PRINT = 5;
     private static final int SHOW = 6;
+    private static final int CLEAR = 7;
 
     private static String jsonLine;
     private static String userName;
@@ -63,9 +64,11 @@ public class CurrencyLogicApp implements Runnable {
                     }
 
                     try {
-                        NbpLogicProcessorGetValueCurrency.getCurrencyValueOnNbpApi();
+                        NbpLogicProcessorGetValueCurrency.printCurrencyToCsv();
                     } catch (FileNotFoundException e) {
                         e.getMessage();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                     break;
                 case CODE:
@@ -84,6 +87,9 @@ public class CurrencyLogicApp implements Runnable {
                         break;
                     case SHOW:
                         NbpLogicProcessorGetValueGold.getGoldValue();
+                        break;
+                    case CLEAR:
+                        NbpLogicProcessorGetValueGold.clearCsvFile();
                         break;
                 case EXIT:
                     System.out.println("Wyjście z programu");

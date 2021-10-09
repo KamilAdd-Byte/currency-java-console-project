@@ -1,8 +1,10 @@
 package currencyapp.nbpconnections.currency.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @JsonPropertyOrder({"no","effectiveDate","mid","bid","ask"})
+@JsonDeserialize
 public class RatesDto {
 
     private String no;

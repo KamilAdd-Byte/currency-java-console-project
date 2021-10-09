@@ -6,7 +6,7 @@ import restfull.NbpDto;
 import java.util.List;
 
 @JsonPropertyOrder({"table","currency","code","rates"})
-public class CurrencyDto extends NbpDto {
+public class CurrencyDto {
 
     private String table;
     private String currency;

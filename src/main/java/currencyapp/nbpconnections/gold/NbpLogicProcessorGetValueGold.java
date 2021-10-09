@@ -17,6 +17,9 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
     private static String jsonLine = "";
     private static Gson gson = null;
+    private static BufferedReader reader;
+    private static File file;
+
     public NbpLogicProcessorGetValueGold(String jsonLine) {
         super(jsonLine);
     }
@@ -58,7 +61,7 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
         gson = new Gson();
 
-        File file = new File("gold.csv");
+        file = new File("gold.csv");
 
         CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
         mapperCsv.enable(CsvParser.Feature.EMPTY_STRING_AS_NULL); //pomijanie nierozpoznanych typów
@@ -72,6 +75,36 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
 
         GoldDto[] goldDto = gson.fromJson(jsonLine, GoldDto[].class);
-        writer.writeValues(file).writeAll(goldDto);
+
+        checkCsvFileAndWriteNewGoldValue(file, writer, goldDto);
     }
+
+
+    private static void checkCsvFileAndWriteNewGoldValue(File file, ObjectWriter writer, GoldDto[] goldDto) throws IOException {
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String line = "";
+            while ((line = reader.readLine())!=null){
+                writer.writeValues(file).writeAll(goldDto);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        reader.close();
+    }
+
+    public static void clearCsvFile(){
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String line = "";
+            while ((line = reader.readLine())!=null){
+                reader.reset();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

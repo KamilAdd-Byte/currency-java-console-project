@@ -85,7 +85,6 @@ public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcesso
     }
 
     public static void printCurrencyToCsv() throws IOException {
-        getCurrencyValueOnNbpApi();
 
         File file = new File("currency.csv");
 

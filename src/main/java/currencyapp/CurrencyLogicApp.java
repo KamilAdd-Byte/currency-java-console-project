@@ -63,7 +63,7 @@ public class CurrencyLogicApp implements Runnable {
                     }
 
                     try {
-                        NbpLogicProcessorGetValueCurrency.printCurrencyToCsv();
+                        NbpLogicProcessorGetValueCurrency.getCurrencyValueOnNbpApi();
                     } catch (FileNotFoundException e) {
                         e.getMessage();
                     } catch (IOException e) {

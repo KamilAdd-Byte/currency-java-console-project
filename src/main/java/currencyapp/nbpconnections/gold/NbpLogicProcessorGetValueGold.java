@@ -12,13 +12,14 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.stream.Stream;
 
 public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
     private static String jsonLine = "";
     private static Gson gson = null;
     private static BufferedReader reader;
-    private static File file;
+    private static File file = new File("gold.csv");
 
     public NbpLogicProcessorGetValueGold(String jsonLine) {
         super(jsonLine);
@@ -61,8 +62,6 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
         gson = new Gson();
 
-        file = new File("gold.csv");
-
         CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
         mapperCsv.enable(CsvParser.Feature.EMPTY_STRING_AS_NULL); //pomijanie nierozpoznanych typów
 
@@ -94,11 +93,12 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
     }
 
     public static void clearCsvFile(){
+        System.out.println("Metoda clear!");
         try {
             reader = new BufferedReader(new FileReader(file));
-            String line = "";
-            while ((line = reader.readLine())!=null){
-                reader.reset();
+            int line = reader.read();
+            while (line!=0){
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

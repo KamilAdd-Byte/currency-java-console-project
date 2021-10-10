@@ -36,7 +36,6 @@ public class CurrencyLogicApp implements Runnable {
     private static final int SHOW = 6;
     private static final int CLEAR = 7;
 
-    private static String jsonLine;
     private static String userName;
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -45,7 +44,7 @@ public class CurrencyLogicApp implements Runnable {
         getApiInfo();
         getWelcomeUser();
 
-        int userChoice = 7;
+        int userChoice = 8;
 
         while (userChoice!=0){
             System.out.println(getAscii());
@@ -71,13 +70,17 @@ public class CurrencyLogicApp implements Runnable {
                         e.printStackTrace();
                     }
                     break;
+                    //Code - currency value
                 case CODE:
                     AbstractJsoupProcessor ajp = new AbstractJsoupProcessor();
                     ajp.getCodeWithWiki();
                     break;
+                //Gold - gold value
                 case GOLD:
-                    System.out.println("Wybierz opcję: " + "\n" + "<< 5 >> Drukuj do CSV" + "\n" + "<< 6 >> Tylko wyświetl");
+                    System.out.println("Wybierz opcję: " + "\n" + "<< 5 >> Drukuj do CSV" + "\n" + "<< 6 >> Tylko wyświetl"+
+                            "\n" + "<< 7 >> Wyczyść plik csv");
                     userChoice = scanner.nextInt();
+
                     case PRINT:
                         try {
                             NbpLogicProcessorGetValueGold.printValueGoldToCsv();

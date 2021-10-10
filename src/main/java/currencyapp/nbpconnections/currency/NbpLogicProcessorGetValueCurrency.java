@@ -93,7 +93,7 @@ public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcesso
         mapperCsv.enable(CsvParser.Feature.EMPTY_STRING_AS_NULL); //pomijanie nierozpoznanych typów
 
         CsvSchema columns = CsvSchema.builder().setUseHeader(true) //utworzenie kolumn
-//                .addColumn("table")
+                .addColumn("table")
                 .addColumn("currency")
                 .addColumn("code")
                 .addColumn("rates")

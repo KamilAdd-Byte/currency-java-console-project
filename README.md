@@ -1,3 +1,9 @@
+<!-- in your header -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+
+<!-- in your body -->
+<i class="devicon-devicon-plain"></i>
+
 ## 'Waluta-Złoto-Wskaźniki' - aplikacja konsolowa java
 
 Aplikacja oparta o usługi REST. Korzysta z nbp-api (http://api.nbp.pl/) by pozyskać dane o 30 ostatnich notowaniach złota (możliwość zapisu do pliku csv)
@@ -22,11 +28,11 @@ http://api.nbp.pl/api/exchangerates/rates/{table}/code}/{date}/
 - gson (convert json to POJO);
 - jackson (create csv file);
 
-## install and project lunch
+## Instalacja i start programu
 
-1. Download zip or tar.gz with CODE tab (Windows, linux..) on your computer,
-2. Unpack the file,
-3. Open terminal and use commend $ mvn clean istall
-4. Next buid package $ mvn package or $ mvn clean dependency:copy-dependencies package
-5. Use $ cd target
-6. Execute commend $ java -cp REST-java-project-1.0-SNAPSHOT.jar currencyapp/App
+1. Ściągnij plik **REST-java-project.jar** z katalogu out/artifacts na swój komputer;
+2. Otwórz terminal swojego systemu operacyjnego w folderze, do którego został pobrany plik (ok. 8 mb);
+4. Wpisz w konsoli komende **java -jar REST-java-project.jar currency.App** ;
+5. Program gotowy do używania.
+
+# 

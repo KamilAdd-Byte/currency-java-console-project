@@ -77,8 +77,7 @@ public class CurrencyLogicApp implements Runnable {
                     break;
                 //Gold - gold value
                 case GOLD:
-                    System.out.println("Wybierz opcję: " + "\n" + "<< 5 >> Drukuj do CSV" + "\n" + "<< 6 >> Tylko wyświetl"+
-                            "\n" + "<< 7 >> Wyczyść plik csv");
+                    System.out.println("Wybierz opcję: " + "\n" + "<< 5 >> Drukuj do CSV" + "\n" + "<< 6 >> Tylko wyświetl");
                     userChoice = scanner.nextInt();
 
                     case PRINT:
@@ -89,10 +88,7 @@ public class CurrencyLogicApp implements Runnable {
                         }
                         break;
                     case SHOW:
-                        NbpLogicProcessorGetValueGold.getGoldValue();
-                        break;
-                    case CLEAR:
-                        NbpLogicProcessorGetValueGold.clearCsvFile();
+                        NbpLogicProcessorGetValueGold.onlyPrintGoldValueInConsole();
                         break;
                 case EXIT:
                     System.out.println("Wyjście z programu");

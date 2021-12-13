@@ -8,18 +8,20 @@ import com.google.gson.Gson;
 import currencyapp.jsoupcode.BasicAppUrl;
 import currencyapp.nbpconnections.gold.dto.GoldDto;
 import currencyapp.nbplogicparents.NbpLogicProcessor;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.stream.Stream;
+import java.util.Scanner;
 
 public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
     private static String jsonLine = "";
     private static Gson gson = null;
     private static BufferedReader reader;
-    private static File file = new File("gold.csv");
+    private static File file;
+    private static final Scanner scanner = new Scanner(System.in);
 
     public NbpLogicProcessorGetValueGold(String jsonLine) {
         super(jsonLine);
@@ -33,7 +35,7 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
         NbpLogicProcessorGetValueGold.jsonLine = jsonLine;
     }
 
-    public static void getGoldValue (){
+    public static void onlyPrintGoldValueInConsole() {
         try {
 
             URL onNbp = NbpLogicProcessor.setUrlToAccessDeniedOnNbp(BasicAppUrl.getUrlBasicValueGold());
@@ -41,11 +43,10 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
-            while ((jsonLine = reader.readLine()) != null){
+            while ((jsonLine = reader.readLine()) != null) {
                 break;
             }
-            gson = new Gson();
-            GoldDto[] goldDto = gson.fromJson(jsonLine, GoldDto[].class);
+            GoldDto[] goldDto = getGoldDtos();
             for (GoldDto dto : goldDto) {
                 System.out.println(dto);
             }
@@ -56,30 +57,22 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
         }
     }
 
+    private static GoldDto[] getGoldDtos() {
+        gson = new Gson();
+        return gson.fromJson(jsonLine, GoldDto[].class);
+    }
+
     public static void printValueGoldToCsv() throws IOException {
 
-        getGoldValue(); // method call
+        onlyPrintGoldValueInConsole(); // method call
 
         gson = new Gson();
 
-        CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
-        mapperCsv.enable(CsvParser.Feature.EMPTY_STRING_AS_NULL); //pomijanie nierozpoznanych typów
+        ObjectWriter writer = getObjectWriter();
+        GoldDto[] goldDto = getGoldDtos();
 
-        CsvSchema columns = CsvSchema.builder().setUseHeader(true) //utworzenie kolumn
-                .addColumn("data")
-                .addColumn("cena")
-                .build();
+        createFileName();
 
-        ObjectWriter writer = mapperCsv.writerWithSchemaFor(GoldDto.class).with(columns);
-
-
-        GoldDto[] goldDto = gson.fromJson(jsonLine, GoldDto[].class);
-
-        checkCsvFileAndWriteNewGoldValue(file, writer, goldDto);
-    }
-
-
-    private static void checkCsvFileAndWriteNewGoldValue(File file, ObjectWriter writer, GoldDto[] goldDto) throws IOException {
         try {
             reader = new BufferedReader(new FileReader(file));
             String line = "";
@@ -89,22 +82,30 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+
         reader.close();
     }
 
-    public static void clearCsvFile(){
-        System.out.println("Metoda clear!");
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            int line = reader.read();
-            while (line!=0){
+    private static ObjectWriter getObjectWriter() {
+        CsvMapper mapperCsv = new CsvMapper(); // instancja CsvMappera
+        mapperCsv.enable(CsvParser.Feature.EMPTY_STRING_AS_NULL); //pomijanie nierozpoznanych typów
 
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        CsvSchema columns = CsvSchema.builder().setUseHeader(true) //utworzenie kolumn
+                .addColumn("data")
+                .addColumn("cena")
+                .build();
+
+        return mapperCsv.writerWithSchemaFor(GoldDto.class).with(columns);
     }
 
+    private static void createFileName() {
+        System.out.println("Nadaj nazwe plikowi:");
+        String userFileName = scanner.nextLine();
+        file = new File(userFileName+".csv");
+        }
+
+    private static void setFile(File file) {
+        NbpLogicProcessorGetValueGold.file = file;
+    }
 }

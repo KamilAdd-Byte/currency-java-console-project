@@ -32,9 +32,9 @@ public class CurrencyLogicApp implements Runnable {
     private static final int CODE = 2;
     private static final int SEARCH = 3;
     private static final int GOLD = 4;
-    private static final int PRINT = 5;
+    private static final int CSV = 5;
     private static final int SHOW = 6;
-    private static final int CLEAR = 7;
+
 
     private static String userName;
     private static final Scanner scanner = new Scanner(System.in);
@@ -52,22 +52,14 @@ public class CurrencyLogicApp implements Runnable {
             userChoice = scanner.nextInt();
 
             switch (userChoice) {
-
+                //case search currency value from nbp.api
                 case SEARCH:
                     System.out.println(CurrencyLogicApp.userName + " wyszukaj interesujących Cię danych wg wzoru:");
-
                     try {
                         getChoiceCurrencyFields();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
                         NbpLogicProcessorGetValueCurrency.getCurrencyValueOnNbpApi();
                     } catch (FileNotFoundException e) {
                         e.getMessage();
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
                     break;
                     //Code - currency value
@@ -79,14 +71,14 @@ public class CurrencyLogicApp implements Runnable {
                 case GOLD:
                     System.out.println("Wybierz opcję: " + "\n" + "<< 5 >> Drukuj do CSV" + "\n" + "<< 6 >> Tylko wyświetl");
                     userChoice = scanner.nextInt();
-
-                    case PRINT:
-                        try {
-                            NbpLogicProcessorGetValueGold.printValueGoldToCsv();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        break;
+//                case CSV:
+//                        try {
+//                            NbpLogicProcessorGetValueGold.printValueGoldToCsv();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                        break;
+                    // TODO: 11.10.2021 Fix CSV write method! 
                     case SHOW:
                         NbpLogicProcessorGetValueGold.onlyPrintGoldValueInConsole();
                         break;
@@ -110,7 +102,7 @@ public class CurrencyLogicApp implements Runnable {
         CurrencyLogicApp.userName = userName;
     }
 
-    private void getChoiceCurrencyFields() throws ParseException {
+    private void getChoiceCurrencyFields() {
        //select table
         System.out.println("Krok 1: Podaj wartość tabeli");
         String outputD = "";

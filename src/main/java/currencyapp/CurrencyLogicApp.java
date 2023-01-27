@@ -12,13 +12,13 @@ import java.util.Scanner;
 
 public class CurrencyLogicApp implements Runnable {
     private static NbpLogicProcessorGetValueCurrency nbpLogicProcessorGetValueCurrency;
-    private String title = "############# Zapytaj o wartość waluty, złota lub wskaźników giełdy ############# "+"\n" +
+    private final String title = "############# Zapytaj o wartość waluty, złota lub wskaźników giełdy ############# "+"\n" +
             "poszukaj wartości waluty wpisując wartość tabeli, kod waluty (po wybraniu opcji 2 otrzymasz małą ściągę wszystkich kodów)"+"\n"+
             "wpisując datę dowiesz sie jaką wartość dana waluta miała we wskazanym przez Ciebie dniu" + "\n"+
             "#######################################################################################"+"\n"+
             "Technologia: Java-11, Jsoup, nbp-api and JAX";
-    private String version = "__________wersja 1.0____________";
-    private String author = "_______@Kamil_Sulejewski__________";
+    private final String version = "__________wersja 1.0____________";
+    private final String author = "_______@Kamil_Sulejewski__________";
     private static final StringBuilder ascii = new StringBuilder("\n" +
             "\n" +
             "__________                      __              __                           .__          __          \n" +
@@ -135,8 +135,9 @@ public class CurrencyLogicApp implements Runnable {
         LocalDate localDate = LocalDate.parse(outputDate);
 
         NbpLogicProcessorGetValueCurrency.setDate(localDate);
-        System.out.println("Date user: "+localDate);
+        System.out.println("Date " + localDate + "given by " + userName);
         scanner.nextLine();
+
     }
 
     public static StringBuilder getAscii() {

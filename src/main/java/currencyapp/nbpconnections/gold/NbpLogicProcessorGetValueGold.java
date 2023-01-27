@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.Gson;
 import currencyapp.jsoupcode.BasicAppUrl;
+import currencyapp.nbpconnections.currency.model.JsonLine;
 import currencyapp.nbpconnections.gold.dto.GoldDto;
 import currencyapp.nbplogicparents.NbpLogicProcessor;
 
@@ -17,23 +18,20 @@ import java.util.Scanner;
 
 public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
-    private static String jsonLine = "";
+    private static JsonLine jsonLine;
     private static Gson gson = null;
     private static BufferedReader reader;
     private static File file;
     private static final Scanner scanner = new Scanner(System.in);
 
-    public NbpLogicProcessorGetValueGold(String jsonLine) {
-        super(jsonLine);
+    public NbpLogicProcessorGetValueGold(JsonLine jsonLine) {
+      NbpLogicProcessorGetValueGold.jsonLine = jsonLine;
     }
 
-    public static String getJsonLine() {
-        return jsonLine;
+    public static JsonLine getEmptyJsonLine() {
+        return JsonLine.empty();
     }
 
-    public static void setJsonLine(String jsonLine) {
-        NbpLogicProcessorGetValueGold.jsonLine = jsonLine;
-    }
 
     public static void onlyPrintGoldValueInConsole() {
         try {
@@ -42,10 +40,9 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
             URLConnection urlConnection = NbpLogicProcessor.setConnectionForUrl(onNbp);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            jsonLine = new JsonLine();
+            jsonLine.setValue(reader.readLine());
 
-            while ((jsonLine = reader.readLine()) != null) {
-                break;
-            }
             GoldDto[] goldDto = getGoldDtos();
             for (GoldDto dto : goldDto) {
                 System.out.println(dto);
@@ -59,7 +56,7 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
 
     private static GoldDto[] getGoldDtos() {
         gson = new Gson();
-        return gson.fromJson(jsonLine, GoldDto[].class);
+        return gson.fromJson(jsonLine.getValue(), GoldDto[].class);
     }
 
     public static void printValueGoldToCsv() throws IOException {
@@ -108,4 +105,5 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
     private static void setFile(File file) {
         NbpLogicProcessorGetValueGold.file = file;
     }
+
 }

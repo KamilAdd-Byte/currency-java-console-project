@@ -1,25 +1,19 @@
 package currencyapp.nbplogicparents;
 
-import currencyapp.csvmapper.CsvProcessorWrite;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * @author kamillodzinski
- * @implNote This is SuperClass
+ * @author Kamil Sulejewski
  */
-public abstract class NbpLogicProcessor extends CsvProcessorWrite {
 
-    private String jsonLine;
+public abstract class NbpLogicProcessor {
+
     private static URL url;
-    private static URLConnection CONNECTION;
 
-    public NbpLogicProcessor(String jsonLine) {
-        this.jsonLine = jsonLine;
-    }
+    public NbpLogicProcessor() {}
 
     /**
      * @param otherUrl url to connections nbp.api or some else
@@ -27,7 +21,7 @@ public abstract class NbpLogicProcessor extends CsvProcessorWrite {
      */
     public static URL setUrlToAccessDeniedOnNbp(String otherUrl) throws MalformedURLException {
         try {
-            URL url = new URL(otherUrl);
+            url = new URL(otherUrl);
             return url;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -36,7 +30,7 @@ public abstract class NbpLogicProcessor extends CsvProcessorWrite {
     }
 
     /**
-     * @param otherUrl url to connections
+     * @param otherUrl url to connectionsimport lombok.Value;
      * @return open to connections provide
      * @throws MalformedURLException
      */

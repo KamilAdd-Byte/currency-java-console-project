@@ -24,7 +24,7 @@ public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcesso
     private static LocalDate date;
 
     public NbpLogicProcessorGetValueCurrency(String jsonLine) {
-        super(jsonLine);
+
     }
 
     public static String getJsonLine() {

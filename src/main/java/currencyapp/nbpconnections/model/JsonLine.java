@@ -1,4 +1,4 @@
-package currencyapp.nbpconnections.currency.model;
+package currencyapp.nbpconnections.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

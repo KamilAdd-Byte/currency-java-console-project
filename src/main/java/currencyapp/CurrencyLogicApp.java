@@ -1,17 +1,15 @@
 package currencyapp;
 
 import currencyapp.jsoupcode.AbstractJsoupProcessor;
-import currencyapp.nbpconnections.currency.NbpLogicProcessorGetValueCurrency;
-import currencyapp.nbpconnections.gold.NbpLogicProcessorGetValueGold;
+import currencyapp.nbpconnections.currency.NbpValueCurrency;
+import currencyapp.nbpconnections.gold.NbpValueGold;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class CurrencyLogicApp implements Runnable {
-    private static NbpLogicProcessorGetValueCurrency nbpLogicProcessorGetValueCurrency;
+    private static NbpValueCurrency nbpValueCurrency;
     private final String title = "############# Zapytaj o wartość waluty, złota lub wskaźników giełdy ############# "+"\n" +
             "poszukaj wartości waluty wpisując wartość tabeli, kod waluty (po wybraniu opcji 2 otrzymasz małą ściągę wszystkich kodów)"+"\n"+
             "wpisując datę dowiesz sie jaką wartość dana waluta miała we wskazanym przez Ciebie dniu" + "\n"+
@@ -57,7 +55,8 @@ public class CurrencyLogicApp implements Runnable {
                     System.out.println(CurrencyLogicApp.userName + " wyszukaj interesujących Cię danych wg wzoru:");
                     try {
                         getChoiceCurrencyFields();
-                        NbpLogicProcessorGetValueCurrency.getCurrencyValueOnNbpApi();
+                        NbpValueCurrency nbpValueCurrency = new NbpValueCurrency();
+                        nbpValueCurrency.getCurrencyValueOnNbpApi();
                     } catch (FileNotFoundException e) {
                         e.getMessage();
                     }
@@ -80,7 +79,8 @@ public class CurrencyLogicApp implements Runnable {
 //                        break;
                     // TODO: 11.10.2021 Fix CSV write method! 
                     case SHOW:
-                        NbpLogicProcessorGetValueGold.onlyPrintGoldValueInConsole();
+                        NbpValueGold nbpValueGold = new NbpValueGold();
+                        nbpValueGold.onlyPrintGoldValueInConsole();
                         break;
                 case EXIT:
                     System.out.println("Wyjście z programu");
@@ -115,7 +115,7 @@ public class CurrencyLogicApp implements Runnable {
             String outputTable = scanner.next().toUpperCase();
             outputD=outputTable;
         }
-        NbpLogicProcessorGetValueCurrency.setTable(outputD.toUpperCase());
+        NbpValueCurrency.setTable(outputD.toUpperCase());
 
         //select currency
         System.out.println("Krok 2: Podaj trzy literowy KOD waluty");
@@ -127,14 +127,14 @@ public class CurrencyLogicApp implements Runnable {
             String outputCurrency = scanner.next();
             output = outputCurrency;
         }
-        NbpLogicProcessorGetValueCurrency.setCurrency(output.toUpperCase());
+        NbpValueCurrency.setCurrency(output.toUpperCase());
 
         //select date
-        System.out.println("Krok 3: Podaj datę by otrzymać wartość wybranej przez siebie waluty: <<||" + NbpLogicProcessorGetValueCurrency.getCurrency() + "||>> wzór -> YYYY-mm-DD");
+        System.out.println("Krok 3: Podaj datę by otrzymać wartość wybranej przez siebie waluty: <<||" + NbpValueCurrency.getCurrency() + "||>> wzór -> YYYY-mm-DD");
         String outputDate = scanner.next();
         LocalDate localDate = LocalDate.parse(outputDate);
 
-        NbpLogicProcessorGetValueCurrency.setDate(localDate);
+        NbpValueCurrency.setDate(localDate);
         System.out.println("Date " + localDate + "given by " + userName);
         scanner.nextLine();
 

@@ -1,16 +1,17 @@
 package currencyapp.nbpconnections.gold;
 
-import currencyapp.nbpconnections.currency.model.JsonLine;
+import currencyapp.nbpconnections.model.JsonLine;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NbpLogicProcessorGetValueGoldTest {
+class NbpValueGoldTest {
 
     @Test
     void shouldJsonLineItsEmpty() {
         //given
-        JsonLine jsonLine = NbpLogicProcessorGetValueGold.getEmptyJsonLine();
+        NbpValueGold nbpValueGold = new NbpValueGold();
+        JsonLine jsonLine = nbpValueGold.getEmptyJsonLine();
         assertEquals(jsonLine.getValue(),"");
     }
 }

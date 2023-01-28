@@ -6,17 +6,20 @@ import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.Gson;
 import currencyapp.jsoupcode.BasicAppUrl;
-import currencyapp.nbpconnections.currency.model.JsonLine;
+import currencyapp.nbpconnections.model.JsonLine;
 import currencyapp.nbpconnections.gold.dto.GoldDto;
+import currencyapp.nbpconnections.model.JsonLineValue;
 import currencyapp.nbplogicparents.NbpLogicProcessor;
+import io.vavr.control.Try;
+import lombok.NoArgsConstructor;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
 
-public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
+@NoArgsConstructor
+public class NbpValueGold extends NbpLogicProcessor implements JsonLineValue {
 
     private static JsonLine jsonLine;
     private static Gson gson = null;
@@ -24,34 +27,39 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
     private static File file;
     private static final Scanner scanner = new Scanner(System.in);
 
-    public NbpLogicProcessorGetValueGold(JsonLine jsonLine) {
-      NbpLogicProcessorGetValueGold.jsonLine = jsonLine;
+    public NbpValueGold(JsonLine jsonLine) {
+      NbpValueGold.jsonLine = jsonLine;
     }
 
-    public static JsonLine getEmptyJsonLine() {
+    public JsonLine getEmptyJsonLine() {
         return JsonLine.empty();
     }
 
 
-    public static void onlyPrintGoldValueInConsole() {
-        try {
-
-            URL onNbp = NbpLogicProcessor.setUrlToAccessDeniedOnNbp(BasicAppUrl.getUrlBasicValueGold());
-            URLConnection urlConnection = NbpLogicProcessor.setConnectionForUrl(onNbp);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            jsonLine = new JsonLine();
-            jsonLine.setValue(reader.readLine());
-
-            GoldDto[] goldDto = getGoldDtos();
-            for (GoldDto dto : goldDto) {
-                System.out.println(dto);
-            }
-        }catch (MalformedURLException e){
-            e.printStackTrace();
-        }catch (IOException e) {
-            e.printStackTrace();
+    public void onlyPrintGoldValueInConsole() {
+        jsonLine = getJsonLine();
+        GoldDto[] goldDto = getGoldDtos();
+        for (GoldDto dto : goldDto) {
+            System.out.println(dto);
         }
+
+    }
+
+    @Override
+    public JsonLine getJsonLineItemByURL() throws IOException {
+        URL onNbp = setUrlToAccessDeniedOnNbp(BasicAppUrl.getUrlBasicValueGold());
+        URLConnection urlConnection = setConnectionForUrl(onNbp);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+        jsonLine = new JsonLine();
+        jsonLine.setValue(reader.readLine());
+        return jsonLine;
+    }
+
+    @Override
+    public JsonLine getJsonLine() {
+        return Try.of(this::getJsonLineItemByURL)
+                .onFailure(Throwable::printStackTrace)
+                .getOrElse(JsonLine.empty());
     }
 
     private static GoldDto[] getGoldDtos() {
@@ -60,9 +68,6 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
     }
 
     public static void printValueGoldToCsv() throws IOException {
-
-        onlyPrintGoldValueInConsole(); // method call
-
         gson = new Gson();
 
         ObjectWriter writer = getObjectWriter();
@@ -103,7 +108,7 @@ public class NbpLogicProcessorGetValueGold extends NbpLogicProcessor {
         }
 
     private static void setFile(File file) {
-        NbpLogicProcessorGetValueGold.file = file;
+        NbpValueGold.file = file;
     }
 
 }

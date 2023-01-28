@@ -6,33 +6,28 @@ import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.Gson;
 import currencyapp.nbpconnections.currency.dto.CurrencyDto;
-import currencyapp.nbpconnections.currency.dto.RatesDto;
+import currencyapp.nbpconnections.model.JsonLine;
+import currencyapp.nbpconnections.model.JsonLineValue;
 import currencyapp.nbplogicparents.NbpLogicProcessor;
+import io.vavr.control.Try;
+import lombok.NoArgsConstructor;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
 
-public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcessor {
+@NoArgsConstructor
+public class NbpValueCurrency extends NbpLogicProcessor implements JsonLineValue {
 
-    private static String jsonLine;
+    private static JsonLine jsonLine;
 
     private static String table;
     private static String currency;
     private static LocalDate date;
 
-    public NbpLogicProcessorGetValueCurrency(String jsonLine) {
-
-    }
-
-    public static String getJsonLine() {
-        return jsonLine;
-    }
-
-    public static void setJsonLine(String jsonLine) {
-        NbpLogicProcessorGetValueCurrency.jsonLine = jsonLine;
+    public NbpValueCurrency(JsonLine jsonLine) {
+        NbpValueCurrency.jsonLine = jsonLine;
     }
 
     public static String getTable() {
@@ -40,7 +35,7 @@ public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcesso
     }
 
     public static void setTable(String table) {
-        NbpLogicProcessorGetValueCurrency.table = table;
+        NbpValueCurrency.table = table;
     }
 
     public static String getCurrency() {
@@ -48,7 +43,7 @@ public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcesso
     }
 
     public static void setCurrency(String currency) {
-        NbpLogicProcessorGetValueCurrency.currency = currency;
+        NbpValueCurrency.currency = currency;
     }
 
     public static LocalDate getDate() {
@@ -56,32 +51,40 @@ public abstract class NbpLogicProcessorGetValueCurrency extends NbpLogicProcesso
     }
 
     public static void setDate(LocalDate date) {
-        NbpLogicProcessorGetValueCurrency.date = date;
+        NbpValueCurrency.date = date;
     }
 
-    public static void getCurrencyValueOnNbpApi() throws FileNotFoundException {
-        try {
-            var urlNbp = "https://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + date;
-            URL onNbp = NbpLogicProcessor.setUrlToAccessDeniedOnNbp(urlNbp);
-            URLConnection urlConnection = NbpLogicProcessor.setConnectionForUrl(onNbp);
+    public void getCurrencyValueOnNbpApi() throws FileNotFoundException {
+            jsonLine = getJsonLine();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            jsonLine = "";
-
-            while ((jsonLine = reader.readLine()) != null) {
-                break;
-            }
             Gson gson = new Gson();
-            CurrencyDto currency = gson.fromJson(jsonLine, CurrencyDto.class);
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Pozyskane dane: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-            System.out.println(currency);
-            System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            CurrencyDto currency = gson.fromJson(jsonLine.getValue(), CurrencyDto.class);
+            printCurrencyValue(currency);
 
-        }
+    }
+
+    @Override
+    public JsonLine getJsonLineItemByURL() throws IOException {
+        var urlNbp = "https://api.nbp.pl/api/exchangerates/rates/" + table + "/" + currency + "/" + date;
+        URL onNbp = setUrlToAccessDeniedOnNbp(urlNbp);
+        URLConnection urlConnection = setConnectionForUrl(onNbp);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+        jsonLine = new JsonLine();
+        jsonLine.setValue(reader.readLine());
+        return jsonLine;
+    }
+
+    @Override
+    public JsonLine getJsonLine() {
+        return Try.of(this::getJsonLineItemByURL)
+                .onFailure(Throwable::printStackTrace)
+                .getOrElse(JsonLine.empty());
+    }
+
+    private static void printCurrencyValue(CurrencyDto currency) {
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Pozyskane dane: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println(currency);
+        System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
     }
 
     public static void printCurrencyToCsv() throws IOException {

@@ -1,3 +1,7 @@
+"Console application based on REST API services. Uses nbp-api (http://api.nbp.pl/) to retrieve data on the last 30 gold quotes (writable to csv file) and currency values including table code, currency code and date."
+
+Detailed description in Polish:
+
 # 'Waluta-Złoto-Wskaźniki' - aplikacja konsolowa java
 
 Aplikacja oparta o usługi REST. Korzysta z nbp-api (http://api.nbp.pl/) by pozyskać dane o 30 ostatnich notowaniach złota (możliwość zapisu do pliku csv)

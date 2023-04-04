@@ -2,12 +2,15 @@ package currencyapp.jsoupcode;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import static io.restassured.RestAssured.when;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The type Basic app url test.
  */
+@SpringBootTest(classes = BasicAppUrlTest.class)
 class BasicAppUrlTest {
 
     /**
@@ -48,7 +51,7 @@ class BasicAppUrlTest {
     }
     @Test
     @DisplayName("should status OK for USD currency")
-    public void getUSDonNbpApi(){
+    void getUSDonNbpApi(){
         when().get("https://api.nbp.pl/api/exchangerates/rates/A/USD/").
         then().statusCode(200);
     }
